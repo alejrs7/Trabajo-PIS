@@ -44,5 +44,6 @@ El angulo de altitud solar es: 45.6789 en grados
 El azimut calculado es: 123.456 grados #################################################################
 
      4.	El programa se detendrá a las 18:00 Horas (puede ser modificado)
- Ya que explicamos el funcionamiento del programa les comparto el link directo de este:https://github.com/alejrs7/Trabajo-PIS-Proyecto-Integrador-de-Saberes-/blob/main/OrientacionSolar.cpp-
+ Ya que explicamos el funcionamiento del programa les comparto el link directo a este:https://github.com/alejrs7/Trabajo-PIS-Proyecto-Integrador-de-Saberes-/blob/main/OrientacionSolar.cpp
+ 
 
