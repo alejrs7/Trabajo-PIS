@@ -30,7 +30,8 @@ Ingrese la longitud del lugar:
 -74.0060
 Ingrese la longitud estándar del lugar:
 -75.0
-3.	El programa se actualizará cada 5 segundos para mostrar los resultados:
+
+   3.	El programa se actualizará cada 5 segundos para mostrar los resultados:
 Ejemplo de Salida
 
 Fecha actual: 16/06/2024 
@@ -41,6 +42,7 @@ La ecuacion del tiempo es: 1.234 minutos
 El tiempo solar verdadero es aproximadamente: 12.5678 
 El angulo de altitud solar es: 45.6789 en grados 
 El azimut calculado es: 123.456 grados #################################################################
-4.	El programa se detendrá a las 18:00 Horas (puede ser modificado)
+
+     4.	El programa se detendrá a las 18:00 Horas (puede ser modificado)
 
 
