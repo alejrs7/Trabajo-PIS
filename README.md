@@ -1,4 +1,4 @@
-# Trabajo-PIS-Proyecto-Integrador-de-Saberes-
+# Trabajo PIS (Proyecto Integrador de Saberes)
 Descripción del proyecto:
 El proyecto trata de solucionar el problema energético que se ha presentado en el país por ello se ha propuesto realizar un seguidor solar que tiene como objetivo hacer uso de la luz solar para proporcionar energía eléctrica y para ello se ha buscado la forma mas eficiente de hacerlo al no ser solamente un panel solar estático si no que cuente con movimiento y este movimiento se encuentre siempre orientado al sol para general la mayor cantidad de energía posible de la forma más eficiente posible.
 
