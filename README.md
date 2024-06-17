@@ -2,7 +2,7 @@
 Descripción del proyecto:
 El proyecto trata de solucionar el problema energético que se ha presentado en el país por ello se ha propuesto realizar un seguidor solar que tiene como objetivo hacer uso de la luz solar para proporcionar energía eléctrica y para ello se ha buscado la forma mas eficiente de hacerlo al no ser solamente un panel solar estático si no que cuente con movimiento y este movimiento se encuentre siempre orientado al sol para general la mayor cantidad de energía posible de la forma más eficiente posible.
 
- #Requisitos:
+ Requisitos:
 Software:  
 •	Compilador C++
 •	Bibliotecas de C++
@@ -18,8 +18,8 @@ Hardware
 •	Memoria RAM de al menos 1 GB (no es obligatorio, pero asegura que se puedan hacer que el sistema operativo y otras aplicaciones puedan ejecutarse sin problemas).
 •	Al menos 100 MB de espacio libre para el compilador y los archivos del código fuente.
 •	Reloj del sistema para proporcionar la fecha y hora actuales.
-#Intrucciones de instalación 
-#Uso 
+Intrucciones de instalación 
+Uso 
 1.	Ejecuta o compila el programa
 2.	Ingrese las coordenadas solicitadas:
 Ejemplo de Entrada
