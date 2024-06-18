@@ -1,13 +1,20 @@
 # Avance PIS (Proyecto Integrador de Saberes)
 Descripción del proyecto:
 El proyecto tiene como objetivo solucionar el problema energético del país mediante el desarrollo de un seguidor solar. Este sistema utiliza la luz solar para proporcionar energía eléctrica de manera más eficiente, ajustando la orientación de los paneles solares para maximizar la captación de energía.
- Requisitos:
+  Requisitos:
+  
 Software
+
 Compilador C++
+
 Bibliotecas de C++:
+
 <stdio.h>: Para entrada y salida estándar.
+
 <math.h>: Para funciones matemáticas.
+
 <time.h>: Para funciones relacionadas con la fecha y hora.
+
 <iostream>: Para manejo de entrada y salida de datos.
 Sistema Operativo
 Unix/Linux: Recomendado debido al uso de la función sleep() específica para estos sistemas.
@@ -23,11 +30,13 @@ Abre una terminal en tu sistema operativo.
 Usa el comando git clone seguido de la URL del repositorio:
 bash
 Copiar código
-git clone https://github.com/alejrs7/Trabajo-PIS-Proyecto-Integrador-de-Saberes-.git
+
+git clone https://github.com/alejrs7/Avance-PIS-.git
 Accede al directorio del repositorio clonado:
 bash
 Copiar código
-cd Trabajo-PIS-Proyecto-Integrador-de-Saberes-
+
+cd Avance-Pis
 Compilar el Código en C++
 Una vez dentro del directorio, compila el archivo principal OrientacionSolar.cpp:
 bash
