@@ -43,7 +43,7 @@ bash
 
 Copiar código
 
-git clone https://github.com/alejrs7/Trabajo-PIS-.git
+git clone https://github.com/alejrs7/Trabajo-PIS
 
 Accede al directorio del repositorio clonado:
 bash
