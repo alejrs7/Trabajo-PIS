@@ -141,18 +141,23 @@ double AnguloAltitudSolar(Orientacion orientacion, double declinacionSolar, doub
     return c;
 }
 
-double Azimut(Orientacion orientacion,double declinacionSolar, double anguloAltitudSolar) {//Funcion para el azimut 
+double Azimut(Orientacion orientacion,double declinacionSolar, double anguloAltitudSolar,double TSV) {//Funcion para el azimut 
 
     double lat = orientacion.latitud;//Variable para usar la latitud
     double d = declinacionSolar;//Variable para usar la declinacion solar
     double Sa = anguloAltitudSolar;//Variable para usar el angulo de altitud solar
+    double H = 15 * (TSV - 12); // Hora solar local
 
     double Azi = 0;//Variable donde haremos las operaciones
     //Formula para calcular el zimut pasando los datos a radianes
     Azi = acos((sin(d * (M_PI / 180.0)) - sin(Sa * (M_PI / 180.0)) * sin(lat * (M_PI / 180.0))) / (cos(Sa * (M_PI / 180.0)) * cos(lat * (M_PI / 180.0))));
     Azi = Azi * (180.0 / M_PI);  // Convertimos a grados
 
+    if (H > 0) {
+        Azi = 360 - Azi; // Ajuste del azimut
+    }
 
+    
     return Azi;
 }
 
@@ -178,7 +183,7 @@ int main() {//Presentamos los valores calculados
         double ecuacionDelTiempo = EcuacionDelTiempo(diasTranscurridos);
         double tiempoSolarVerdadero = TiempoSolarVerdadero(orientacion, ecuacionDelTiempo, hora);
         double anguloAltitudSolar = AnguloAltitudSolar(orientacion, declinacionSolar, tiempoSolarVerdadero);
-        double azimut = Azimut(orientacion, declinacionSolar, anguloAltitudSolar);
+        double azimut = Azimut(orientacion, declinacionSolar, anguloAltitudSolar,tiempoSolarVerdadero);
         printf("El azimut calculado es: %g grados\n", azimut);//mostramos el azimut
         printf("#################################################################\n");//mostramos un espacio para separar las actualizaciones
 
