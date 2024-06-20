@@ -171,7 +171,7 @@ int main() {//Presentamos los valores calculados
         FechaActual();
         int hora = HoraActual();
 
-        if (hora>=13)//condicional para detener la ejecucion del programa a la hora que se oculta el sol
+        if (hora>=18)//condicional para detener la ejecucion del programa a la hora que se oculta el sol
         {
             printf("Se deteniene el progrma a las 6 de la tarde\n");
             break;
