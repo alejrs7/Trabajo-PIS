@@ -5,23 +5,73 @@
 #include <ctime>// Libreria para la hora
 #include <unistd.h> //Libreria para usar sleep en segundos (solo en sistemas Unix/Linux)
 
-
 struct Orientacion {// Struct para guardar la latitud y longitud
     float latitud;//Variable para almacenar la latitud
     float longitud;//Variable para almacenar la longitud
-    float longEstandar;//Variable para la laongitud estandar esta se calcula con -5 *15 por nuestra region
+    float longEstandar;//Variable para la longitud estandar esta se calcula con -5 *15 por nuestra region
 };
+
+float obtenerNumero(const char* mensaje, int valor) {//funcion para verificar que no ingresen letras en lugar de numeros
+    float numero;//Variable donde ingresaremos los datos
+    bool band;
+    do {//Validamos si ingreso un numero o letra
+        band = true;
+        printf("%s", mensaje);
+        if (scanf("%f", &numero) == 1) {//Si no ingreso letras el programa continua como corresponde
+            switch (valor)
+            {
+                case 1:
+                    if (numero < -90 || numero > 90 ) {
+                        printf("Error: dato no valido. Por favor, ingrese un numero entre -90 y 90.\n");
+                        band = false;
+                    }
+                    break;
+                case 2:
+                    if(numero < -180 || numero > 180) {
+                        printf("Error: dato no valido. Por favor, ingrese un numero entre -180 y 180.\n");
+                        band = false;
+                    }
+                    break;
+                case 3:
+                    if(numero < 0 || numero > 60) {
+                        printf("Error: dato no valido. Por favor, ingrese un numero entre 0 y 60.\n");
+                        band = false;
+                    }
+                    break;
+            }
+            while (getchar() != '\n'); // Limpiamos los datos residuales que pudieran quedar
+        } else {//En caso de haber ingresado letras saltara un error hasta que se corriga el error
+            printf("Error no se puede ingresar letras. Por favor, ingrese un numero.\n");
+            while (getchar() != '\n'); // Limpiamos los datos residuales que pudieran quedar
+            band = false;
+        }
+    } while(!band);
+    return numero;
+}
+
+float obtenerDatos(const char* mensaje, int valor) {
+    float grados;
+    float min;
+    float seg;
+    float result;
+
+    printf("%s", mensaje);
+    grados = obtenerNumero("ingrese los grados: ", valor);
+    min = obtenerNumero("ingresar los minutos: ", 3);
+    seg = obtenerNumero("ingresar los segundos: ", 3);
+    result = grados + (min/60) + (seg/3600);
+    return result;
+}
 
 struct Orientacion ingresarOrientacion()//Estructura para Ingresar los datos 
 {
     struct Orientacion Datos;//Indicamos donde hubicaremos y guardaremos la informacion que ingresemos
 
-    printf("Ingrese la latitud del lugar\n");//ingresamos la latitud
-    scanf("%f", &Datos.latitud);//La guardamos
-    printf("Ingrese la longitud del lugar\n");//ingresamos la longitud
-    scanf("%f", &Datos.longitud);//la guardamos
-    printf("Ingrese la longitud estandar del lugar\n");//ingresamos la longitud estandar
-    scanf("%f", &Datos.longEstandar);//la guardamos
+    printf("Ingrese los datos para calcular la posicion del sol en formato grados, minutos, segundos\n");
+    printf("Ejemplo: Latitud = grados:3, minutos:59, segundos:35.3, Longitud grados:79, minutos:12, segundos:15.2\n");
+    Datos.latitud = obtenerDatos("Ingrese la latitud del lugar\n", 1);
+    Datos.longitud = obtenerDatos("Ingrese la longitud del lugar\n", 2);
+    Datos.longEstandar = obtenerNumero("Ingrese la longitud estandar del lugar\n", 2);
 
     return Datos;
 }
@@ -78,8 +128,8 @@ double DeclinacionSolar(int diasTotal) {// Funcion de la declinacion solar
     double AnguIncli = -23.44;// angulo de la inclinacion del eje de la Tierra
     double ReDeclinacion = 0;// Donde realizamos la operacion
 
-    double radianesPorDia = 2 * M_PI / 365;  // Conversion a radianes
-    ReDeclinacion = AnguIncli * cos(radianesPorDia * (diasTotal + 10));// Formula declinacion solar usando los dias totales
+    double radianesPorDia = ((360/365) * (diasTotal + 10)) * (M_PI / 180);  // Conversion a radianes
+    ReDeclinacion = AnguIncli * cos(radianesPorDia);// Formula declinacion solar usando los dias totales
     
     printf("La declinacion solar es: %g en grados\n", ReDeclinacion);
 
@@ -141,23 +191,26 @@ double AnguloAltitudSolar(Orientacion orientacion, double declinacionSolar, doub
     return c;
 }
 
-double Azimut(Orientacion orientacion,double declinacionSolar, double anguloAltitudSolar,double TSV) {//Funcion para el azimut 
+double Azimut(Orientacion orientacion,double declinacionSolar, double anguloAltitudSolar, double TSV) {//Funcion para el azimut 
 
+    const double formRadianes = M_PI / 180.0;
     double lat = orientacion.latitud;//Variable para usar la latitud
+    lat = lat * formRadianes;
     double d = declinacionSolar;//Variable para usar la declinacion solar
+    d = d * formRadianes;
     double Sa = anguloAltitudSolar;//Variable para usar el angulo de altitud solar
+    Sa = Sa * formRadianes;
     double H = 15 * (TSV - 12); // Hora solar local
-
     double Azi = 0;//Variable donde haremos las operaciones
+
     //Formula para calcular el zimut pasando los datos a radianes
-    Azi = acos((sin(d * (M_PI / 180.0)) - sin(Sa * (M_PI / 180.0)) * sin(lat * (M_PI / 180.0))) / (cos(Sa * (M_PI / 180.0)) * cos(lat * (M_PI / 180.0))));
+    Azi = acos((sin(d) - sin(Sa) * sin(lat)) / (cos(Sa) * cos(lat)));
     Azi = Azi * (180.0 / M_PI);  // Convertimos a grados
 
     if (H > 0) {
         Azi = 360 - Azi; // Ajuste del azimut
     }
 
-    
     return Azi;
 }
 
@@ -167,27 +220,25 @@ int main() {//Presentamos los valores calculados
 
     while (true) {//bucle para mostrar los resultados cada 5 segundos
 
-
         FechaActual();
         int hora = HoraActual();
 
-        if (hora>=18)//condicional para detener la ejecucion del programa a la hora que se oculta el sol
+        if (hora >= 18)//condicional para detener la ejecucion del programa a la hora que se oculta el sol
         {
-            printf("Se deteniene el progrma a las 6 de la tarde\n");
+            printf("Se detiene el programa a las 6 de la tarde\n");
             break;
         }
-        
 
         int diasTranscurridos = DiasTranscurridos();
         double declinacionSolar = DeclinacionSolar(diasTranscurridos);
         double ecuacionDelTiempo = EcuacionDelTiempo(diasTranscurridos);
         double tiempoSolarVerdadero = TiempoSolarVerdadero(orientacion, ecuacionDelTiempo, hora);
         double anguloAltitudSolar = AnguloAltitudSolar(orientacion, declinacionSolar, tiempoSolarVerdadero);
-        double azimut = Azimut(orientacion, declinacionSolar, anguloAltitudSolar,tiempoSolarVerdadero);
-        printf("El azimut calculado es: %g grados\n", azimut);//mostramos el azimut
+        double azimut = Azimut(orientacion, declinacionSolar, anguloAltitudSolar, tiempoSolarVerdadero);
+        printf("El azimut calculado es: %g grados\n", azimut);
         printf("#################################################################\n");//mostramos un espacio para separar las actualizaciones
 
-        sleep(5);//Pausa de 5 segundos antes de la proxima actualizacion
+        sleep(60);//Pausa de 60 segundos antes de la proxima actualizacion
     }
     return 0;
 }
