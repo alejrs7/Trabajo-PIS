@@ -5,12 +5,14 @@
 #include <ctime>   // Libreria para la hora
 #include <windows.h> // Libreria para usar Sleep en milisegundos (solo en sistemas Windows)
 
+//Structura de la orientacion
 struct Orientacion {
     float latitud;
     float longitud;
     float longEstandar;
 };
 
+//Funcion para verificar datos 
 float obtenerNumero(const char* mensaje, int valor) {
     float numero;
     bool band;
@@ -48,6 +50,7 @@ float obtenerNumero(const char* mensaje, int valor) {
     return numero;
 }
 
+//Funcion para obtener datos
 float obtenerDatos(const char* mensaje, int valor) {
     float grados;
     float min;
@@ -58,10 +61,10 @@ float obtenerDatos(const char* mensaje, int valor) {
     grados = obtenerNumero("ingrese los grados: ", valor);
     min = obtenerNumero("ingresar los minutos: ", 3);
     seg = obtenerNumero("ingresar los segundos: ", 3);
-    result = grados + (min/60) + (seg/3600);
+    result = grados + (min/60) + (seg/3600);//Convertimos los datos a grados decimales
     return result;
 }
-
+//Funcion para modificar el valor dependiendo de la ubicacion
 int obtenerSigno(const char* mensaje) {
     char respuesta[4];
     printf("%s (s/n): ", mensaje);
@@ -77,7 +80,7 @@ int obtenerSigno(const char* mensaje) {
         return 1; // Default a Norte/Este
     }
 }
-
+//Struct para pedir al usuario los datos 
 struct Orientacion ingresarOrientacion() {
     struct Orientacion Datos;
 
@@ -93,7 +96,7 @@ struct Orientacion ingresarOrientacion() {
 
     return Datos;
 }
-
+//Funcion para mostar la fecha actual
 void FechaActual() {
     std::time_t tiempoActual = std::time(nullptr);
     std::tm* fechaLocal = std::localtime(&tiempoActual);
@@ -104,7 +107,7 @@ void FechaActual() {
 
     printf("Fecha actual: %02d/%02d/%04d\n", dia, mes, anio);
 }
-
+//Funcion para la hora actual
 int HoraActual() {
     std::time_t tiempoActual = std::time(nullptr);
     std::tm* horaLocal = std::localtime(&tiempoActual);
@@ -117,7 +120,7 @@ int HoraActual() {
 
     return hora;
 }
-
+//Funcion para calcular los dias transcurridos
 int DiasTranscurridos() {
     std::time_t tiempoActual = std::time(nullptr);
     std::tm* fechaLocal = std::localtime(&tiempoActual);
@@ -128,7 +131,7 @@ int DiasTranscurridos() {
     printf("Dias transcurridos desde el inicio del anio: %d\n", diasTotal);
     return diasTotal;
 }
-
+//Funcion para calcular la declinacion solar
 double DeclinacionSolar(int diasTotal) {
     double AnguIncli = -23.44;
     double ReDeclinacion = 0;
@@ -141,7 +144,7 @@ double DeclinacionSolar(int diasTotal) {
 
     return ReDeclinacion;
 }
-
+//Funcion para calcular la ecuacion del tiempo EoT
 double EcuacionDelTiempo(int diasTotal) {
     double EoT = 0;
     double B = (360.0 / 365.0) * (diasTotal - 81);
@@ -153,7 +156,7 @@ double EcuacionDelTiempo(int diasTotal) {
 
     return EoT;
 }
-
+//Funcion para calcular el tiempo solar verdadero TSV
 double TiempoSolarVerdadero(Orientacion orientacion, double EoT, int hora) {
     std::time_t tiempoActual = std::time(nullptr);
     std::tm* horaLocal = std::localtime(&tiempoActual);
@@ -172,7 +175,7 @@ double TiempoSolarVerdadero(Orientacion orientacion, double EoT, int hora) {
 
     return TSV;
 }
-
+//Funcion para calcular el angulo de altitud solar
 double AnguloAltitudSolar(Orientacion orientacion, double declinacionSolar, double TSV) {
     double lat = orientacion.latitud;
     lat = lat * (M_PI / 180.0);  // Convertir grados a radianes
@@ -190,7 +193,7 @@ double AnguloAltitudSolar(Orientacion orientacion, double declinacionSolar, doub
 
     return c;
 }
-
+//Funcion para calcular el azimut 
 double Azimut(Orientacion orientacion, double declinacionSolar, double anguloAltitudSolar, double TSV) {
     const double formRadianes = M_PI / 180.0;
     double lat = orientacion.latitud;
@@ -210,11 +213,10 @@ double Azimut(Orientacion orientacion, double declinacionSolar, double anguloAlt
         Azi = 360 - Azi;
     }
 
-    printf("El azimut calculado es: %g grados\n", Azi);
-
     return Azi;
 }
 
+//Funcion principal donde mostramos los datos ya calculados
 int main() {
     Orientacion orientacion = ingresarOrientacion();
 
@@ -249,7 +251,7 @@ int main() {
         printf("El azimut calculado es: %g grados\n", azimut);
         printf("#################################################################\n");
 
-        Sleep(60000); // Pausa de 60 segundos antes de la próxima actualización
+        Sleep(60000); // Pausa de 1 minutos
     }
     fclose(archivo); // Cerrar el archivo
     
